@@ -102,9 +102,10 @@ import UIKit
   //private var quadraticRegression = PolynomialRegression.regression(withPoints: points, degree: 2)
   //private var exponentialRegression: ExponentialRegression = ExponentialRegression()
   //private var logarithmicRegression: LogarithmicRegression = LogarithmicRegression()
-  private var currentModel: TrendlineCalculator?
+  //private var currentModel: TrendlineCalculator?
+  private var currentModel: LinearRegression? = LinearRegression()
   private var lastResults: [String: Double] = [:]
-  private var initialized: Bool = false
+  private var initialized: Bool = true//false
   private var dataModel: ChartDataModel? // DataModel?
   private var minX: Double = Double.infinity
   private var maxX: Double = -Double.infinity
@@ -154,7 +155,7 @@ import UIKit
   func onDataSourceValueChange(_ component: DataSource, _ key: String?, _ newValue: AnyObject?) {
     lastResults.removeAll()
 
-    guard let chartDataEntries = _chartData?.GetAllEntries() as? [YailList<AnyObject>] else {
+    guard let chartDataEntries = _chartData?._chartDataModel?._entries as? [DGCharts.ChartDataEntry] else {
       print("No entries in the data source")
       return
     }
@@ -162,18 +163,14 @@ import UIKit
     var x: [Double] = []
     var y: [Double] = []
 
-    for entryTuple in chartDataEntries {
-      guard entryTuple.count == 2,
-            let xValue = entryTuple[0] as? String,
-            let yValue = entryTuple[1] as? String,
-            let xDouble = Double(xValue),
-            let yDouble = Double(yValue) else {
-        continue
-      }
+    for entry in chartDataEntries {
+      let xValue = entry.x
+      let yValue = entry.y
 
-      x.append(xDouble)
-      y.append(yDouble)
+      x.append(xValue)
+      y.append(yValue)
     }
+
 
     guard !x.isEmpty, x.count >= 2, x.count == y.count else {
       print("Not enough entries in the data source or unequal X and Y data points")
@@ -279,7 +276,7 @@ import UIKit
       _model = newValue
       switch newValue {
       case .Linear:
-        currentModel = LinearRegression() as any TrendlineCalculator
+        currentModel = LinearRegression()
       case .Quadratic:
         // Handle quadratic regression, perhaps using a different method or class
         break

@@ -5,11 +5,9 @@ import Foundation
 import DGCharts
 
 class LineChartBaseDataModel: PointChartDataModel {
-  var chartDataEntry: Array<ChartDataEntry> = []
-
   init(data: DGCharts.LineChartData, view: LineChartViewBase) {
     super.init(data: data, view: view)
-    let dataset = LineChartDataSet(entries: chartDataEntry, label: " ")
+    let dataset = LineChartDataSet(entries: _entries, label: " ")
     self.dataset = dataset
     self.data.dataSets = [dataset]
     setDefaultStylingProperties()

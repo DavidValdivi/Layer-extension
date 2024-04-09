@@ -287,7 +287,7 @@ import DGCharts
       group.leave()
     }
     group.wait()
-    return holder
+    return holder 
     
     /*
      Original:
