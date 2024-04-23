@@ -11,7 +11,7 @@ import DGCharts
 import Network
 import UIKit
 
-@objc public class BestFitModel: NSObject {
+@objc public class BestFitModel: NSObject, OptionList {
   @objc public static let Linear = BestFitModel(0)
   @objc public static let Quadratic = BestFitModel(1)
   // @objc public static let Cubic = BestFitModel("Cubic")
@@ -99,12 +99,12 @@ import UIKit
   private var _strokeStyle = StrokeStyle.Solid
   private var _visible: Bool = true
   private var regression: LinearRegression = LinearRegression()
-  //private var quadraticRegression = PolynomialRegression.regression(withPoints: points, degree: 2)
-  //private var exponentialRegression: ExponentialRegression = ExponentialRegression()
-  //private var logarithmicRegression: LogarithmicRegression = LogarithmicRegression()
-  //private var currentModel: TrendlineCalculator?
-  private var currentModel: LinearRegression? = LinearRegression()
-  private var lastResults: [String: Double] = [:]
+  private var quadraticRegression: QuadraticRegression = QuadraticRegression()
+  private var exponentialRegression: ExponentialRegression = ExponentialRegression()
+  private var logarithmicRegression: LogarithmicRegression = LogarithmicRegression()
+  private var currentModel: TrendlineCalculator?
+  //private var currentModel: LinearRegression? = LinearRegression()
+  private var lastResults: [String: Any] = [:]
   private var initialized: Bool = true//false
   private var dataModel: ChartDataModel? // DataModel?
   private var minX: Double = Double.infinity
@@ -112,6 +112,7 @@ import UIKit
   private var _density: CGFloat
 
   @objc public init(_ chartContainer: Chart) {
+    self.currentModel = LinearRegression()
     self._container = chartContainer
     self._density = UIScreen.main.scale
     super.init()
@@ -227,15 +228,15 @@ import UIKit
     }
   }
 
-  var correlationCoefficient: Double {
+  var correlationCoefficient: Any {
     return lastResults["correlation coefficient"] ?? Double.nan
   }
 
-  var exponentialBase: Double {
+  var exponentialBase: Any {
     return lastResults["b"] ?? Double.nan
   }
 
-  var exponentialCoefficient: Double {
+  var exponentialCoefficient: Any {
     return lastResults["a"] ?? Double.nan
   }
 
@@ -251,48 +252,39 @@ import UIKit
     }
   }
 
-  var linearCoefficient: Double {
+  var linearCoefficient: Any {
     return lastResults["slope"] ?? Double.nan
   }
 
-  var logarithmCoefficient: Double {
+  var logarithmCoefficient: Any {
     return lastResults["b"] ?? Double.nan
   }
 
-  var logarithmConstant: Double {
+  var logarithmConstant: Any {
     return lastResults["a"] ?? Double.nan
   }
 
   // Example of converting result retrieval to Swift
-  func getResult(for key: String) -> Double {
+  func getResult(for key: String) -> Any {
     lastResults[key] ?? Double.nan
   }
 
-  var model: BestFitModel {
-    get {
-      return _model
+  @objc public func setModel(_ newModel: BestFitModel) {
+    switch newModel {
+    case .Linear:
+      currentModel = LinearRegression()
+    case .Quadratic:
+      currentModel = QuadraticRegression()
+    case .Exponential:
+      currentModel = ExponentialRegression()
+    case .Logarithmic:
+      currentModel = LogarithmicRegression()
+    default:
+      print("Unknown model: \(String(describing: newModel))")
     }
-    set {
-      _model = newValue
-      switch newValue {
-      case .Linear:
-        currentModel = LinearRegression()
-      case .Quadratic:
-        // Handle quadratic regression, perhaps using a different method or class
-        break
-      case .Exponential:
-        // Handle exponential regression, perhaps using a different method or class
-        break
-      case .Logarithmic:
-        // Handle logarithmic regression, perhaps using a different method or class
-        break
-      default:
-        print("Unknown model: \(newValue)")
-      }
 
-      if initialized {
-        _container.refresh()
-      }
+    if initialized {
+      _container.refresh()
     }
   }
 
@@ -300,7 +292,7 @@ import UIKit
     lastResults["predictions"] as? [Double] ?? []
   }
 
-  var quadraticCoefficient: Double {
+  var quadraticCoefficient: Any {
     (lastResults["x^2"]) ?? 0.0
   }
 
@@ -308,7 +300,7 @@ import UIKit
     lastResults
   }
 
-  var rSquared: Double {
+  var rSquared: Any {
     (lastResults["r^2"]) ?? Double.nan
   }
 
@@ -358,7 +350,7 @@ import UIKit
     }
   }
 
-  var XIntercepts: [Double] {
+  var XIntercepts: Any {
     if let intercepts = lastResults["Xintercepts"] as? [Double] {
       return intercepts
     } else if let intercept = lastResults["Xintercepts"] {
@@ -367,7 +359,7 @@ import UIKit
     return []
   }
 
-  var YIntercept: Double {
+  var YIntercept: Any {
     if let intercept = lastResults["Yintercept"] {
       return intercept
     } else if let intercept = lastResults["intercept"] {
@@ -422,6 +414,20 @@ import UIKit
     }
   }
 
+  private func convertToDoubleDictionary(from dictionary: [String: Any]) -> [String: Double] {
+    var doubleDictionary = [String: Double]()
+    for (key, value) in dictionary {
+      if let doubleValue = value as? Double {
+        doubleDictionary[key] = doubleValue
+      }
+      // Optionally handle string conversion to double
+      else if let stringValue = value as? String, let doubleValue = Double(stringValue) {
+        doubleDictionary[key] = doubleValue
+      }
+    }
+    return doubleDictionary
+  }
+
   // Assuming a method to compute points for the trendline
   private func getPoints(xMin: CGFloat, xMax: CGFloat, viewWidth: Int) -> [CGPoint] {
     guard initialized, let currentModel = currentModel else {
@@ -445,7 +451,9 @@ import UIKit
 
     let steps = Int(ceil(Double(viewWidth) / Double(strokeStep)))
 
-    let results = currentModel.computePoints(results: lastResults, xMin: Double(actualXMin), xMax: Double(actualXMax), viewWidth: viewWidth, steps: steps)
+    let temp = convertToDoubleDictionary(from: lastResults)
+
+    let results = currentModel.computePoints(results: temp, xMin: Double(actualXMin), xMax: Double(actualXMax), viewWidth: viewWidth, steps: steps)
 
     return results
   }
