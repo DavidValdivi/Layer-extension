@@ -9,6 +9,7 @@
 import Foundation
 import Accelerate
 import UIKit
+import DGCharts
 
 protocol HasTrendline {
   func getPoints(xMin: CGFloat, xMax: CGFloat, viewWidth: Int) -> [CGPoint]

@@ -203,6 +203,7 @@
 		159AC1712BAA0C30002906B7 /* Trendline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 159AC1702BAA0C30002906B7 /* Trendline.swift */; };
 		159AC1732BAA1086002906B7 /* ChartComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 159AC1722BAA1086002906B7 /* ChartComponent.swift */; };
 		159AC1772BB4C174002906B7 /* TrendlineCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 159AC1762BB4C174002906B7 /* TrendlineCalculator.swift */; };
+		15C9E0232C2B11650080EE9D /* LineWithTrendlineRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15C9E0222C2B11650080EE9D /* LineWithTrendlineRenderer.swift */; };
 		22843757284F89DF00EC3133 /* AssetFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22843756284F89DF00EC3133 /* AssetFetcher.swift */; };
 		46E77D8E29DD6894002CCDFB /* ShowAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E77D8D29DD6894002CCDFB /* ShowAlert.swift */; };
 		5132E481C0B949ECDE06AE78 /* Pods_AIComponentKit_AIComponentKitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FD2633D7266389EB43FF45F /* Pods_AIComponentKit_AIComponentKitTests.framework */; };
@@ -489,6 +490,7 @@
 		159AC1702BAA0C30002906B7 /* Trendline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trendline.swift; sourceTree = "<group>"; };
 		159AC1722BAA1086002906B7 /* ChartComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartComponent.swift; sourceTree = "<group>"; };
 		159AC1762BB4C174002906B7 /* TrendlineCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrendlineCalculator.swift; sourceTree = "<group>"; };
+		15C9E0222C2B11650080EE9D /* LineWithTrendlineRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineWithTrendlineRenderer.swift; sourceTree = "<group>"; };
 		22843756284F89DF00EC3133 /* AssetFetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetFetcher.swift; sourceTree = "<group>"; };
 		32349630B8B4D40D05FB295A /* Pods-AIComponentKitTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AIComponentKitTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-AIComponentKitTests/Pods-AIComponentKitTests.release.xcconfig"; sourceTree = "<group>"; };
 		46E77D8D29DD6894002CCDFB /* ShowAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowAlert.swift; sourceTree = "<group>"; };
@@ -736,6 +738,7 @@
 				159AC1722BAA1086002906B7 /* ChartComponent.swift */,
 				159AC1762BB4C174002906B7 /* TrendlineCalculator.swift */,
 				156726262BB607CF00AECCEA /* DataModel.swift */,
+				15C9E0222C2B11650080EE9D /* LineWithTrendlineRenderer.swift */,
 			);
 			name = charts;
 			sourceTree = "<group>";
@@ -1443,6 +1446,7 @@
 				06678E32233956EE00BD3F19 /* main.swift in Sources */,
 				CBC78690202BA119005363A3 /* Marker.swift in Sources */,
 				DE4075E520126DA7000F4C3E /* SpeechRecognizer.swift in Sources */,
+				15C9E0232C2B11650080EE9D /* LineWithTrendlineRenderer.swift in Sources */,
 				0685B5B32003C931005153ED /* ThemeEnum.swift in Sources */,
 				068F985A289A320200E2883F /* ChartData2D.swift in Sources */,
 				0417585020093AE5007D2C31 /* FileError.swift in Sources */,

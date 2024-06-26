@@ -453,7 +453,7 @@ import UIKit
 
     let temp = convertToDoubleDictionary(from: lastResults)
 
-    let results = currentModel.computePoints(results: temp, xMin: Double(actualXMin), xMax: Double(actualXMax), viewWidth: viewWidth, steps: steps)
+    let results = currentModel.computePoints(results: temp, xMin: Double(xMin), xMax: Double(xMax), viewWidth: viewWidth, steps: steps)
 
     return results
   }
@@ -550,11 +550,11 @@ import UIKit
     }
     
     func getPoints(xMin: CGFloat, xMax: CGFloat, viewWidth: Int) -> [CGPoint] {
-      trendline.getPoints(xMin: xMin, xMax: xMax, viewWidth: viewWidth)
+      return trendline.getPoints(xMin: xMin, xMax: xMax, viewWidth: viewWidth)
     }
 
     func getColor() -> UIColor {
-      trendline.Color
+      return trendline.Color
     }
 
     func getDashPattern() -> [CGFloat]? {
@@ -602,7 +602,7 @@ import UIKit
 
       let dataSet = LineChartBestFitDataSet(trendline: trendline)
 
-      super.init(data: data, view: chartView)
+      super.init(data: data, view: chartView, dataset: dataSet)
     }
   }
 
