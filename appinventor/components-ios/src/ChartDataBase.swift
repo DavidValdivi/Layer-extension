@@ -101,8 +101,8 @@ import DGCharts
     _chartDataModel = _container.chartView?.createChartModel()
 
     // set default values
-    Color = AIComponentKit.Color.black.int32
-    Label = ""
+    _chartDataModel?.setColor(argbToColor(_color))
+    _chartDataModel?.setLabel(_label ?? "")
   }
 
   @objc open var LineType: LineType {
