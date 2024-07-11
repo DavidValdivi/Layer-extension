@@ -26,11 +26,12 @@ class LineWithTrendlineRenderer: LineChartRenderer {
       if dataSet.isVisible, dataSet is HasTrendline {
         drawTrendline(context: context, dataSet: dataSet as! Trendline.LineChartBestFitDataSet)
       } else {
-        super.drawDataSet(context: context, dataSet: dataSet as! LineChartDataSetProtocol)
+        super.drawData(context: context)
+        //super.drawDataSet(context: context, dataSet: dataSet as! LineChartDataSetProtocol)
       }
     }
 
-    super.drawData(context: context)
+    //super.drawData(context: context)
   }
 
   func drawTrendline(context: CGContext, dataSet: Trendline.LineChartBestFitDataSet) {

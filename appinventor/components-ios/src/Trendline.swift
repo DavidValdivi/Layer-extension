@@ -41,8 +41,6 @@ import UIKit
   }
 }
 
-
-
 @objc public class StrokeStyle: NSObject {
   @objc public static let Solid = StrokeStyle(1)
   @objc public static let Dashed = StrokeStyle(2)
@@ -103,25 +101,24 @@ import UIKit
   private var exponentialRegression: ExponentialRegression = ExponentialRegression()
   private var logarithmicRegression: LogarithmicRegression = LogarithmicRegression()
   private var currentModel: TrendlineCalculator?
-  //private var currentModel: LinearRegression? = LinearRegression()
   private var lastResults: [String: Any] = [:]
-  private var initialized: Bool = true//false
-  private var dataModel: ChartDataModel? // DataModel?
+  private var initialized: Bool = false
+  private var dataModel: ChartDataModel?
   private var minX: Double = Double.infinity
   private var maxX: Double = -Double.infinity
   private var _density: CGFloat
 
   @objc public init(_ chartContainer: Chart) {
-    self.currentModel = LinearRegression()
     self._container = chartContainer
     self._density = UIScreen.main.scale
     super.init()
+    self._container.addDataComponent(self)
     self._dashed = createDashedPattern(density: _density)
     self._dotted = createDottedPattern(density: _density)
-    self._container.addDataComponent(self)
+    self.currentModel = regression
   }
 
-  func initialize() {
+  @objc func Initialize() {
     initialized = true
     if dataModel == nil {
       initChartData()
@@ -200,19 +197,22 @@ import UIKit
 
   }
 
-  // Property implementations
-  @objc public func setChartData(_ newChartData: ChartData2D?) {
-    // Remove this object as a listener from the existing chart data if it exists
-    if _chartData != nil {
-      _chartData?.removeDataSourceChangeListener(self)
+  @objc public var ChartData: ChartData2D {
+    get {
+      return _chartData!
     }
+    set {
+      if _chartData != nil {
+        _chartData?.removeDataSourceChangeListener(self)
+      }
 
-    // Update chart data with the new value
-    _chartData = newChartData
+      // Update chart data with the new value
+      _chartData = newValue
 
-    // Add this object as a listener to the new chart data if it is not nil
-    if _chartData != nil {
-      _chartData?.addDataSourceChangeListener(self)
+      // Add this object as a listener to the new chart data if it is not nil
+      if _chartData != nil {
+        _chartData?.addDataSourceChangeListener(self)
+      }
     }
   }
 
@@ -240,7 +240,7 @@ import UIKit
     return lastResults["a"] ?? Double.nan
   }
 
-  var extend: Bool {
+  @objc open var extend: Bool {
     get {
       return _extend
     }
@@ -304,7 +304,7 @@ import UIKit
     (lastResults["r^2"]) ?? Double.nan
   }
 
-  var strokeStyle: StrokeStyle {
+  @objc open var strokeStyle: StrokeStyle {
     get {
       return _strokeStyle
     }
@@ -316,7 +316,7 @@ import UIKit
     }
   }
 
-  var strokeWidth: CGFloat {
+  @objc open var strokeWidth: CGFloat {
     get {
       return _strokeWidth
     }
@@ -328,19 +328,7 @@ import UIKit
     }
   }
 
-  func setStrokeStyle(from value: Int) {
-    if let newStyle = StrokeStyle.fromUnderlyingValue(value) {
-      strokeStyle = newStyle
-    }
-  }
-
-  func setStrokeStyle(from value: String) {
-    if let intValue = Int(value), let newStyle = StrokeStyle.fromUnderlyingValue(intValue) {
-      strokeStyle = newStyle
-    }
-  }
-
-  var Visible: Bool {
+  @objc open var Visible: Bool {
     get { return _visible }
     set {
       _visible = newValue
@@ -383,7 +371,7 @@ import UIKit
     // Dispatch updated event with results
   }
 
-  func initChartData() {
+  @objc public func initChartData() {
     print("initChartData view is \(String(describing: _container))")
     if _container.chartView is ScatterChartView {
       dataModel = ScatterChartBestFitModel(container: _container, trendline: self)
@@ -433,9 +421,6 @@ import UIKit
     guard initialized, let currentModel = currentModel else {
       return []
     }
-
-    let actualXMin = max(xMin, CGFloat(minX))
-    let actualXMax = min(xMax, CGFloat(maxX))
 
     let strokeStep: Int
     switch strokeStyle {
@@ -571,11 +556,11 @@ import UIKit
     }
 
     func getLineWidth() -> CGFloat {
-      trendline.strokeWidth * CGFloat(trendline._density)
+      return trendline.strokeWidth * CGFloat(trendline._density)
     }
 
     func isVisible() -> Bool {
-      trendline._visible
+      return trendline._visible
     }
 
     override var description: String {

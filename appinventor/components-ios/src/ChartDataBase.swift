@@ -38,12 +38,11 @@ import DGCharts
     set {
       _color = newValue
       _chartDataModel?.setColor(argbToColor(newValue))
-     refreshChart()
+      refreshChart()
     }
   }
-  
+
   @objc public func Initialize() {
-    print("in Initialize")
     _initialized = true
     if dataSource != nil {
       // Source(dataSource)
