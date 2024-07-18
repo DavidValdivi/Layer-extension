@@ -207,9 +207,9 @@ import DGCharts
       if elements.isEmpty || elements == "" || !_initialized {
         return
       }
-      DispatchQueue.main.async {
+      DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
         self._chartDataModel?.setElements(elements)
-        self.refreshChart()
+        self.onDataChange()
       }
     }
   }
@@ -320,6 +320,11 @@ import DGCharts
   func onDataChange(){
     // update the chart with the chart data model's current data and refresh the chart itself
     _container._chartView?.refresh(model: _chartDataModel!)
+    for listener in listeners {
+      if let listener = listener as? DataSourceChangeListener {
+        listener.onDataSourceValueChange(self, nil, nil)
+      }
+    }
   }
 
   // MARK: Private Implementation

@@ -90,7 +90,7 @@ import UIKit
   private var _dotted: [CGFloat]?
   private var _container: Chart
   private var _chartData: ChartData2D?
-  private var _color: UIColor = .black
+  private var _color: Int32 = AIComponentKit.Color.black.int32
   private var _extend: Bool = true
   private var _model = BestFitModel.Linear
   private var _strokeWidth: CGFloat = 1.0
@@ -216,7 +216,7 @@ import UIKit
     }
   }
 
-  @objc public var Color: UIColor {
+  @objc open var Color: Int32 {
     get {
       return self._color
     }
@@ -469,7 +469,7 @@ import UIKit
     }
 
     func getColor() -> UIColor {
-      return trendline.Color
+      return argbToColor(trendline.Color)
     }
 
     func getDashPattern() -> [CGFloat]? {
@@ -539,7 +539,7 @@ import UIKit
     }
 
     func getColor() -> UIColor {
-      return trendline.Color
+      return argbToColor(trendline.Color)
     }
 
     func getDashPattern() -> [CGFloat]? {

@@ -68,6 +68,7 @@ open class ChartView {
   
   public func refresh() {
     DispatchQueue.main.async {
+      self.chart?.data?.calcMinMax()
       self.chart?.notifyDataSetChanged()
     }
   }

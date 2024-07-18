@@ -61,7 +61,7 @@ import Foundation
     set { __tick = newValue }
   }
 
-  private var listeners = Set<NSObject>()
+  internal var listeners = Set<NSObject>()
   func addDataSourceChangeListener(_ listener: DataSourceChangeListener) {
     guard let listenerObject = listener as? NSObject else { return }
     listeners.insert(listenerObject)

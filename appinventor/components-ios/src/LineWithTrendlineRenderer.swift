@@ -25,29 +25,31 @@ class LineWithTrendlineRenderer: LineChartRenderer {
     for dataSet in lineData.dataSets {
       if dataSet.isVisible, dataSet is HasTrendline {
         drawTrendline(context: context, dataSet: dataSet as! Trendline.LineChartBestFitDataSet)
-      } else {
-        super.drawData(context: context)
-        //super.drawDataSet(context: context, dataSet: dataSet as! LineChartDataSetProtocol)
       }
     }
-
-    //super.drawData(context: context)
+    super.drawData(context: context)
   }
 
   func drawTrendline(context: CGContext, dataSet: Trendline.LineChartBestFitDataSet) {
     guard dataSet.isVisible else { return }
+    guard let chart = dataProvider as? DGCharts.LineChartView else {
+      print("Cannot cast \(dataProvider) as chart")
+      return
+    }
     let trans = dataProvider?.getTransformer(forAxis: dataSet.axisDependency)
     guard let valueToPixelMatrix = trans?.valueToPixelMatrix else { return }
-    let entryCount = dataSet.count
     let isDrawSteppedEnabled = dataSet.mode == .stepped
-    let pointsPerEntryPair = isDrawSteppedEnabled ? 4 : 2
     let phaseY = animator.phaseY
 
-
-    let points = dataSet.getPoints(xMin: dataProvider?.lowestVisibleX ?? 0, xMax: dataProvider?.highestVisibleX ?? 0, viewWidth: Int(viewPortHandler.contentWidth))
+    let points = dataSet.getPoints(xMin: chart.chartXMin, xMax: chart.chartXMax, viewWidth: Int(viewPortHandler.contentWidth))
     if points.isEmpty {
       return
     }
+
+//    print(points[0].x)
+//    if (points[0].x == 1.7976931348623157e+308){
+//      return
+//    }
 
     let linePath = CGMutablePath()
     for (index, point) in points.enumerated() {
