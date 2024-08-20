@@ -228,15 +228,15 @@ import UIKit
     }
   }
 
-  var correlationCoefficient: Any {
+  @objc open var correlationCoefficient: Any {
     return lastResults["correlation coefficient"] ?? Double.nan
   }
 
-  var exponentialBase: Any {
+  @objc open var exponentialBase: Any {
     return lastResults["b"] ?? Double.nan
   }
 
-  var exponentialCoefficient: Any {
+  @objc open var exponentialCoefficient: Any {
     return lastResults["a"] ?? Double.nan
   }
 
@@ -252,15 +252,15 @@ import UIKit
     }
   }
 
-  var linearCoefficient: Any {
+  @objc open var linearCoefficient: Any {
     return lastResults["slope"] ?? Double.nan
   }
 
-  var logarithmCoefficient: Any {
+  @objc open var logarithmCoefficient: Any {
     return lastResults["b"] ?? Double.nan
   }
 
-  var logarithmConstant: Any {
+  @objc open var logarithmConstant: Any {
     return lastResults["a"] ?? Double.nan
   }
 
@@ -288,19 +288,19 @@ import UIKit
     }
   }
 
-  var predictions: [Double] {
+  @objc open var predictions: [Double] {
     lastResults["predictions"] as? [Double] ?? []
   }
 
-  var quadraticCoefficient: Any {
+  @objc open var quadraticCoefficient: Any {
     (lastResults["x^2"]) ?? 0.0
   }
 
-  var results: [String: Any] {
+  @objc open var results: [String: Any] {
     lastResults
   }
 
-  var rSquared: Any {
+  @objc open var rSquared: Any {
     (lastResults["r^2"]) ?? Double.nan
   }
 
@@ -338,16 +338,14 @@ import UIKit
     }
   }
 
-  var XIntercepts: Any {
-    if let intercepts = lastResults["Xintercepts"] as? [Double] {
+  @objc open var XIntercepts: Any {
+    if let intercepts = lastResults["Xintercepts"] {
       return intercepts
-    } else if let intercept = lastResults["Xintercepts"] {
-      return [intercept]
     }
     return []
   }
 
-  var YIntercept: Any {
+  @objc open var YIntercept: Any {
     if let intercept = lastResults["Yintercept"] {
       return intercept
     } else if let intercept = lastResults["intercept"] {
