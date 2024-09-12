@@ -13,7 +13,7 @@ import DGCharts
   var _chartDataModel: ChartDataModel?
   var _container: Chart
   var _color: Int32 = AIComponentKit.Color.black.int32
-  var _colors: YailList<AnyObject> = []
+  var _colors: [UIColor] = []
   var _label: String?
 
   var dataFileColumns: Array<String> = []
@@ -56,39 +56,33 @@ import DGCharts
     } else if let elements = _elements {
       ElementsFromPairs = elements
     }
+    _chartDataModel?.setColor(argbToColor(_color))
+    if !_colors.isEmpty {
+      _chartDataModel?.setColors(_colors)
+    }
   }
   
   @objc open var Colors: YailList<AnyObject> {
     get {
-      refreshChart()
-      return _colors
+      return YailList(array: _colors.map({ colorToArgb($0) }))
     }
     set {
-      var resultColors: Array<Int> = []
+      var resultColors: [UIColor] = []
       for i in newValue {
+        if i is SCMSymbol {
+          continue
+        }
         let color: NSString = "\(i)" as NSString
         var colorValue: CLong = CLong(color.longLongValue)
         let two: CLong = 2
         if colorValue > Int.max {
           colorValue = colorValue + two * CLong(Int.min)
         }
-        resultColors.append(colorValue as Int)
+        resultColors.append(argbToColor(Int32(truncating: colorValue as NSNumber)))
       }
-      
-      // set _colors property to list version of resultColors
-      let resultColorsList: YailList<AnyObject> = []
-      for resultColor in resultColors{
-        resultColorsList.add(resultColor)
-      }
-      _colors = resultColorsList
-      
-      // convert resultColors to NSUI
-      var resultColorsUI: Array<NSUIColor> = []
-      for resultColor in resultColors {
-        resultColorsUI.append(argbToColor(Int32(resultColor)))
-      }
-      _chartDataModel?.dataset!.colors = resultColorsUI
-      onDataChange()
+      _colors = resultColors
+      _chartDataModel?.dataset?.colors = _colors
+      refreshChart()
     }
   }
   
@@ -216,20 +210,16 @@ import DGCharts
       if elements.isEmpty || elements == "" || !_initialized {
         return
       }
-      DispatchQueue.main.async {
-        self._chartDataModel?.setElements(elements)
-        self.refreshChart()
-      }
+      self._chartDataModel?.setElements(elements)
+      self.onDataChange()
     }
   }
   
   // Removes all the entries from the Data Series
   @objc func Clear(){
-    DispatchQueue.main.async {
-      self._chartDataModel?.clearEntries()
-      // refresh chart with new data
-      self.refreshChart()
-    }
+    self._chartDataModel?.clearEntries()
+    // refresh chart with new data
+    self.refreshChart()
   }
   
   // datafile and web not implemented in swift yet

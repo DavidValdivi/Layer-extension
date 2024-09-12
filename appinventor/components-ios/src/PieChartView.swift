@@ -20,6 +20,8 @@ open class PieChartView: ChartView {
     let chart = DGCharts.PieChartView()
     chart.translatesAutoresizingMaskIntoConstraints = false
     chart.holeRadiusPercent = 0.0
+    chart.transparentCircleRadiusPercent = 0.0
+    chart.drawEntryLabelsEnabled = false
     self.chart = chart
   }
 
@@ -41,7 +43,13 @@ open class PieChartView: ChartView {
 
   public override func createChartModel() -> ChartDataModel {
     let pieChart = createPieChartRing()
-    return PieChartDataModel(data: PieChartData(), view: self, chart: pieChart)
+    pieChart.holeRadiusPercent = 0.0
+    pieChart.drawEntryLabelsEnabled = false
+    pieChart.transparentCircleRadiusPercent = 0.0
+    let data = PieChartData()
+    data.setDrawValues(false)
+    data.dataSet?.drawValuesEnabled = false
+    return PieChartDataModel(data: data, view: self, chart: pieChart)
   }
 
   public func resizePieRings() {
@@ -149,6 +157,7 @@ open class PieChartView: ChartView {
       pieChart = DGCharts.PieChartView()
       pieChart.chartDescription.enabled = true
       pieChart.legend.enabled = false
+      pieChart.holeRadiusPercent = 0.0
     }
 
     setPieChartProperties(pieChart)

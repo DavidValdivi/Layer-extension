@@ -67,29 +67,24 @@ open class ChartView {
    */
   
   public func refresh() {
-    DispatchQueue.main.async {
-      self.chart?.notifyDataSetChanged()
-    }
+    self.chart?.data?.calcMinMax()
+    self.chart?.notifyDataSetChanged()
   }
   
   public func refresh(model: ChartDataModel) {
-    DispatchQueue.main.async {
-      let refreshTask : RefreshTask = RefreshTask(self, model.entries)
-      let dataset : ChartDataSet = model.dataset ?? ChartDataSet()
-      dataset.drawValuesEnabled = true
-      refreshTask.onPostExecute(result: model) // how to do execute
-    }
+    let refreshTask : RefreshTask = RefreshTask(self, model.entries)
+    let dataset : ChartDataSet = model.dataset ?? ChartDataSet()
+    dataset.drawValuesEnabled = true
+    refreshTask.onPostExecute(result: model) // how to do execute
   }
   
   public func refresh(model: ChartDataModel, entries: Array<DGCharts.ChartDataEntry>) {
-    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-      let dataset : ChartDataSet = model.dataset ?? ChartDataSet()
-      dataset.replaceEntries(entries)
-      dataset.drawValuesEnabled = true
-      self.chart?.data?.notifyDataChanged()
-      self.chart?.notifyDataSetChanged()
-      self.chart?.setNeedsDisplay()
-    }
+    let dataset : ChartDataSet = model.dataset ?? ChartDataSet()
+    dataset.replaceEntries(entries)
+    dataset.drawValuesEnabled = true
+    self.chart?.data?.notifyDataChanged()
+    self.chart?.notifyDataSetChanged()
+    self.chart?.setNeedsDisplay()
   }
   
   // make RefreshTask
@@ -105,9 +100,7 @@ open class ChartView {
     }
 
     public func onPostExecute(result: ChartDataModel) {
-      DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-        self._chartView.refresh(model: result, entries: self._entries)
-      }
+      self._chartView.refresh(model: result, entries: self._entries)
     }
   }
 }

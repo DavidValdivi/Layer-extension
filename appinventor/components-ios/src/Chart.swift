@@ -279,6 +279,7 @@ import DGCharts
     LegendEnabled = _legendEnabled
     GridEnabled = _gridEnabled
     Labels = _labels
+    PieRadius = _pieRadius
   }
 
   func addDataComponent(_ dataComponent: ChartDataBase) {
