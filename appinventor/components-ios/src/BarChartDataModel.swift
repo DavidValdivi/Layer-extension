@@ -43,25 +43,22 @@ open class BarChartDataModel: Chart2DDataModel {
       // Add the new entry at the end
       _entries.append(entry)
     }
-
-    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-      self.dataset?.replaceEntries(self._entries)
-    }
   }
 
 
   public override func getEntryFromTuple(_ tuple: YailList<AnyObject>) -> ChartDataEntry? {
-    guard tuple.count >= 2,
-          let rawX = tuple[0+1] as? String,
-          let rawY = tuple[1+1] as? String else {
+    guard tuple.count >= 3 else {
       // Handle error for insufficient chart entry values or type mismatch
       return nil
     }
 
-    if let x = Float(rawX), let y = Float(rawY) {
+    let rawX = "\(tuple[1])"
+    let rawY = "\(tuple[2])"
+
+    if let x = Double(rawX), let y = Double(rawY) {
       // Floor the x value and convert to Int as the Bar Chart uses x entries as an index
       let flooredX = Int(floor(x))
-      return BarChartDataEntry(x: Double(flooredX), y: Double(y))
+      return BarChartDataEntry(x: Double(flooredX), y: y)
     } else {
       // Handle number format exception
       return nil
