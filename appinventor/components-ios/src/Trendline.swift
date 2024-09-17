@@ -515,7 +515,7 @@ import UIKit
 
       let dataSet = ScatterChartBestFitDataSet(trendline: trendline)
 
-      super.init(data: data, view: chartView)
+      super.init(data: data, view: chartView, dataset: dataSet)
     }
   }
 
