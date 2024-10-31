@@ -53,6 +53,8 @@ import java.util.Map;
 public final class MockForm extends MockContainer {
   private static final Logger LOG = Logger.getLogger(MockForm.class.getName());
 
+  private Integer view = 1;
+
   /*
    * Widget for the mock form title bar.
    */
@@ -500,14 +502,22 @@ public final class MockForm extends MockContainer {
 
   private void setPhoneStyle() {
     if (landscape) {
-      if (idxPhoneSize == 0) phoneWidget.setStylePrimaryName("ode-SimpleMockFormPhoneLandscape");
-      else if (idxPhoneSize == 1) phoneWidget.setStylePrimaryName("ode-SimpleMockFormPhoneLandscapeTablet");
-      else if (idxPhoneSize == 2) phoneWidget.setStylePrimaryName("ode-SimpleMockFormPhoneLandscapeMonitor");
+      if (idxPhoneSize == 1) {
+        phoneWidget.setStylePrimaryName("ode-SimpleMockFormPhoneLandscapeTablet");
+      } else if (idxPhoneSize == 2) {
+        phoneWidget.setStylePrimaryName("ode-SimpleMockFormPhoneLandscapeMonitor");
+      } else {
+        phoneWidget.setStylePrimaryName("ode-SimpleMockFormPhoneLandscape");
+      }
       navigationBar.setStylePrimaryName("ode-SimpleMockFormNavigationBarLandscape");
     } else {
-      if (idxPhoneSize == 0) phoneWidget.setStylePrimaryName("ode-SimpleMockFormPhonePortrait");
-      else if (idxPhoneSize == 1) phoneWidget.setStylePrimaryName("ode-SimpleMockFormPhonePortraitTablet");
-      else if (idxPhoneSize == 2) phoneWidget.setStylePrimaryName("ode-SimpleMockFormPhonePortraitMonitor");
+      if (idxPhoneSize == 1) {
+        phoneWidget.setStylePrimaryName("ode-SimpleMockFormPhonePortraitTablet");
+      } else if (idxPhoneSize == 2) {
+        phoneWidget.setStylePrimaryName("ode-SimpleMockFormPhonePortraitMonitor");
+      } else {
+        phoneWidget.setStylePrimaryName("ode-SimpleMockFormPhonePortrait");
+      }
       navigationBar.setStylePrimaryName("ode-SimpleMockFormNavigationBarPortrait");
     }
     if (idxPhonePreviewStyle == 2) {
@@ -545,6 +555,11 @@ public final class MockForm extends MockContainer {
   private void resizePanel(int newWidth, int newHeight){
     screenWidth = newWidth;
     screenHeight = newHeight;
+    int scrollbarWidth = 0;
+    if (Boolean.parseBoolean(getPropertyValue(PROPERTY_NAME_SCROLLABLE))) {
+      // only display space for a scrollbar if the form is scrollable
+      scrollbarWidth = getVerticalScrollbarWidth();
+    }
 
     if (landscape) {
       String val = editor.getProjectEditor().getProjectSettingsProperty(
@@ -561,8 +576,13 @@ public final class MockForm extends MockContainer {
       usableScreenHeight = screenHeight - phoneBar.getHeight() - titleBar.getHeight() - navigationBar.getHeight();
     }
     rootPanel.setPixelSize(usableScreenWidth, usableScreenHeight);
-    scrollPanel.setPixelSize(usableScreenWidth + getVerticalScrollbarWidth(), usableScreenHeight);
-    formWidget.setPixelSize(screenWidth + getVerticalScrollbarWidth(), screenHeight);
+    // This margin is to ensure the mockform aligns to the left when there is space for a scrollbar
+    rootPanel.getElement().getStyle().setProperty("margin-right", scrollbarWidth + "px");
+    scrollPanel.setPixelSize(usableScreenWidth + scrollbarWidth, usableScreenHeight);
+    formWidget.setPixelSize(screenWidth + scrollbarWidth, screenHeight);
+    // Added width to phoneWidget to prevent it from expanding wider than intended
+    // if the SimpleComponentsPanel menu is wider than the phonebar.
+    phoneWidget.setWidth(usableScreenWidth + scrollbarWidth + "px");
     // Store properties
     changeProperty(PROPERTY_NAME_WIDTH, "" + usableScreenWidth);
     boolean scrollable = Boolean.parseBoolean(getPropertyValue(PROPERTY_NAME_SCROLLABLE));
@@ -629,6 +649,7 @@ public final class MockForm extends MockContainer {
     }
     changePreviewFlag = false;
   }
+
   /*
    * Returns the width of a vertical scroll bar, calculating it if necessary.
    */
@@ -713,12 +734,10 @@ public final class MockForm extends MockContainer {
   @Override
   protected void addWidthHeightProperties() {
     addProperty(PROPERTY_NAME_WIDTH, "" + PORTRAIT_WIDTH, null,
-        "Appearance", "Specifies the width of the component on the screen.",
-        PropertyTypeConstants.PROPERTY_TYPE_LENGTH, null,
+        "Appearance", PropertyTypeConstants.PROPERTY_TYPE_LENGTH, null,
         new YoungAndroidLengthPropertyEditor());
     addProperty(PROPERTY_NAME_HEIGHT, "" + LENGTH_PREFERRED, null,
-        "Appearance", "Specifies the height of the component on the screen.",
-        PropertyTypeConstants.PROPERTY_TYPE_LENGTH, null,
+        "Appearance", PropertyTypeConstants.PROPERTY_TYPE_LENGTH, null,
         new YoungAndroidLengthPropertyEditor());
   }
 
@@ -762,7 +781,7 @@ public final class MockForm extends MockContainer {
       case PROPERTY_NAME_ACCENT_COLOR:
       case PROPERTY_NAME_THEME:
       case PROPERTY_NAME_DEFAULTFILESCOPE: {
-        return editor.isScreen1();
+        return false;
       }
 
       default: {
@@ -848,6 +867,7 @@ public final class MockForm extends MockContainer {
       int heightHint = scrollable ? LENGTH_PREFERRED : usableScreenHeight;
       changeProperty(PROPERTY_NAME_HEIGHT, "" + heightHint);
     }
+    resizePanel(screenWidth, screenHeight);
   }
 
   private void setIconProperty(String icon) {
@@ -1341,7 +1361,18 @@ public final class MockForm extends MockContainer {
    * @return  tree showing the component hierarchy of the form
    */
   public TreeItem buildComponentsTree() {
-    return buildTree();
+    return buildComponentsTree(view);
+  }
+
+  /**
+   * Builds a tree of the component hierarchy of the form for display in the
+   * {@code SourceStructureExplorer}.
+   *
+   * @return  tree showing the component hierarchy of the form
+   */
+  public TreeItem buildComponentsTree(Integer view) {
+    this.view = view;
+    return buildTree(view);
   }
 
   // PropertyChangeListener implementation
@@ -1439,6 +1470,10 @@ public final class MockForm extends MockContainer {
     } else {
       myVAlignmentPropertyEditor.enable();
     }
+  }
+
+  public void projectPropertyChanged() {
+    ((YaFormEditor) editor).refreshCurrentPropertiesPanel();
   }
 
   @Override

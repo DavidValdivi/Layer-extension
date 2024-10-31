@@ -274,17 +274,14 @@ open class ListView: ViewComponent, AbstractMethodsForViewComponent,
         _selectionIndex = selectionIndex
         _selection = _elements[Int(selectionIndex) - 1]
         _selectionDetailText = _elements[Int(selectionIndex) - 1]
+        _view.selectRow(at: IndexPath(row: Int(_selectionIndex) - 1, section: 0), animated: true, scrollPosition: UITableView.ScrollPosition.middle)
       } else {
         _selectionIndex = 0
         _selection = ""
         _selectionDetailText = ""
-      }
-      if _selectionIndex == 0 {
         if let path = _view.indexPathForSelectedRow {
           _view.deselectRow(at: path, animated: true)
         }
-      } else {
-        _view.selectRow(at: IndexPath(row: Int(_selectionIndex), section: 0), animated: true, scrollPosition: UITableView.ScrollPosition.middle)
       }
     }
   }
@@ -402,8 +399,8 @@ open class ListView: ViewComponent, AbstractMethodsForViewComponent,
 
     if indexPath.row < _elements.count {
       cell.textLabel?.text = _elements[indexPath.row]
-      cell.textLabel?.numberOfLines = 1
-      cell.textLabel?.lineBreakMode = .byTruncatingTail
+      cell.textLabel?.numberOfLines = 0
+      cell.textLabel?.lineBreakMode = .byWordWrapping
     } else {
       let listDataIndex = indexPath.row - _elements.count
       if _listViewLayoutMode == 1{
@@ -528,13 +525,8 @@ open class ListView: ViewComponent, AbstractMethodsForViewComponent,
         cell.textLabel?.text = _listData[listDataIndex]["Text1"]
       }
 
-      if ((_listData[listDataIndex]["Text1"]?.contains("\n")) != nil) {
-        cell.textLabel?.numberOfLines = 0
-        cell.textLabel?.lineBreakMode = .byWordWrapping
-      } else {
-        cell.textLabel?.numberOfLines = 1
-        cell.textLabel?.lineBreakMode = .byTruncatingTail
-      }
+      cell.textLabel?.numberOfLines = 0
+      cell.textLabel?.lineBreakMode = .byWordWrapping
     }
 
     cell.textLabel?.font = cell.textLabel?.font.withSize(CGFloat(_textSize))

@@ -7,6 +7,7 @@
 package com.google.appinventor.buildserver;
 
 import com.google.appinventor.buildserver.stats.NullStatReporter;
+import com.google.appinventor.buildserver.tasks.android.AndroidBuildFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -94,6 +95,17 @@ public final class Main {
       cmdLineParser.printUsage(System.err);
       System.exit(1);
     }
+
+    if (commandLineOptions.dexCacheDir != null) {
+      File cacheDir = new File(commandLineOptions.dexCacheDir);
+      if (!cacheDir.exists() && !cacheDir.mkdirs()) {
+        throw new IllegalArgumentException(new IOException("Unable to create dex cache dir "
+            + commandLineOptions.dexCacheDir));
+      }
+    }
+
+    AndroidBuildFactory.install();
+    // TODO(ewpatton): Install iOS build factory once published
 
     ProjectBuilder projectBuilder = new ProjectBuilder(new NullStatReporter());
     ZipFile zip = null;
