@@ -836,7 +836,6 @@
 		06E59EAB1D92C91800C42804 /* visible */ = {
 			isa = PBXGroup;
 			children = (
-				11027ACD2B9F3AE300F0D46D /* DataScience */,
 				04AB2222202129BD0033281F /* maps */,
 				06D151931DC464BB00FC981E /* core */,
 				06D151911DC4646000FC981E /* ui */,
@@ -857,6 +856,8 @@
 		06E59EAC1D92C91D00C42804 /* nonvisible */ = {
 			isa = PBXGroup;
 			children = (
+				11027ACE2B9F3B3C00F0D46D /* AnamolyDetection.swift */,
+				114D31A82BD6F67D00C787F4 /* LinearRegression.swift */,
 				DE3F6B082080F72400A0BA69 /* Camera.swift */,
 				068E0EAE1DC251090086FFDA /* ActivityStarter.swift */,
 				06EC0A1D1D959CD4001CD8DC /* BarcodeScanner.swift */,
@@ -982,15 +983,6 @@
 				681D59062A84139E007B5DB5 /* OptionList.swift */,
 			);
 			name = common;
-			sourceTree = "<group>";
-		};
-		11027ACD2B9F3AE300F0D46D /* DataScience */ = {
-			isa = PBXGroup;
-			children = (
-				11027ACE2B9F3B3C00F0D46D /* AnamolyDetection.swift */,
-				114D31A82BD6F67D00C787F4 /* LinearRegression.swift */,
-			);
-			path = DataScience;
 			sourceTree = "<group>";
 		};
 		7474807A747CFE996FC4893A /* Pods */ = {
