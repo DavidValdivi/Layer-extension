@@ -27,7 +27,7 @@ import UIKit
     }
 }
 
-@objc class LinearRegression: NonvisibleComponent {
+@objc class LinearRegression2: NonvisibleComponent {
     
     public override init(_ container: ComponentContainer) {
         super.init(container)

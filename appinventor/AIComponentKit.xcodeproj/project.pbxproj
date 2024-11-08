@@ -194,7 +194,7 @@
 		08AB5804201AF2BA00F38C88 /* Canvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08AB5803201AF2BA00F38C88 /* Canvas.swift */; };
 		0AE0AA8744D14E11695CF2E0 /* Pods_AIComponentKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB4FA20345A0AEA4E0CB60F2 /* Pods_AIComponentKit.framework */; };
 		11027ACF2B9F3B3C00F0D46D /* AnamolyDetection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11027ACE2B9F3B3C00F0D46D /* AnamolyDetection.swift */; };
-		114D31A92BD6F67D00C787F4 /* LinearRegression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114D31A82BD6F67D00C787F4 /* LinearRegression.swift */; };
+		114D31A92BD6F67D00C787F4 /* LinearRegression2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114D31A82BD6F67D00C787F4 /* LinearRegression2.swift */; };
 		151EB7E2298853E400315044 /* AccessibleComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151EB7E1298853E400315044 /* AccessibleComponent.swift */; };
 		1556D4E82C99B7EF003C9DBA /* ScatterWithTrendlineRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1556D4E72C99B7EF003C9DBA /* ScatterWithTrendlineRenderer.swift */; };
 		156726252BB6063D00AECCEA /* DataCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156726242BB6063D00AECCEA /* DataCollection.swift */; };
@@ -485,7 +485,7 @@
 		088CAFCF20DABB2E002B1B67 /* Ball.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ball.swift; sourceTree = "<group>"; };
 		08AB5803201AF2BA00F38C88 /* Canvas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Canvas.swift; sourceTree = "<group>"; };
 		11027ACE2B9F3B3C00F0D46D /* AnamolyDetection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnamolyDetection.swift; sourceTree = "<group>"; };
-		114D31A82BD6F67D00C787F4 /* LinearRegression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinearRegression.swift; sourceTree = "<group>"; };
+		114D31A82BD6F67D00C787F4 /* LinearRegression2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinearRegression2.swift; sourceTree = "<group>"; };
 		151EB7E1298853E400315044 /* AccessibleComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessibleComponent.swift; sourceTree = "<group>"; };
 		1556D4E72C99B7EF003C9DBA /* ScatterWithTrendlineRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScatterWithTrendlineRenderer.swift; sourceTree = "<group>"; };
 		156726242BB6063D00AECCEA /* DataCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataCollection.swift; sourceTree = "<group>"; };
@@ -975,7 +975,7 @@
 			isa = PBXGroup;
 			children = (
 				11027ACE2B9F3B3C00F0D46D /* AnamolyDetection.swift */,
-				114D31A82BD6F67D00C787F4 /* LinearRegression.swift */,
+				114D31A82BD6F67D00C787F4 /* LinearRegression2.swift */,
 				DE3F6B082080F72400A0BA69 /* Camera.swift */,
 				068E0EAE1DC251090086FFDA /* ActivityStarter.swift */,
 				06EC0A1D1D959CD4001CD8DC /* BarcodeScanner.swift */,
@@ -1573,7 +1573,7 @@
 				DE3F6B092080F72400A0BA69 /* Camera.swift in Sources */,
 				B49FD9BE2AF894E40049FA79 /* LineType.swift in Sources */,
 				06AEDC581E04C12900371E72 /* FormatUtil.swift in Sources */,
-				114D31A92BD6F67D00C787F4 /* LinearRegression.swift in Sources */,
+				114D31A92BD6F67D00C787F4 /* LinearRegression2.swift in Sources */,
 				080C7FE5210784F2007C94A8 /* Ev3ReportDelegate.swift in Sources */,
 				DE2EE36A20DBD3B700927587 /* LineString.swift in Sources */,
 				DE4EA34620AE2CDD009681D8 /* HTMLEntities.swift in Sources */,
