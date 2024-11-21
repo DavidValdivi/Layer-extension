@@ -14,9 +14,11 @@ open class ScatterChartView: PointChartView {
   override init(_ chartComponent: Chart) {
     super.init(chartComponent)
 
-    chart = DGCharts.ScatterChartView()
+    let chart = DGCharts.ScatterChartView()
+    self.chart = chart
+    chart.renderer = ScatterWithTrendlineRenderer(chart: chart, animator: chart.chartAnimator, viewPortHandler: chart.viewPortHandler)
     data = DGCharts.ScatterChartData()
-    chart?.data = data
+    chart.data = data
 
     initializeDefaultSettings()
   }
