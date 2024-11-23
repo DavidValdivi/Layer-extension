@@ -48,8 +48,8 @@ public class LayersMultiple extends AndroidNonvisibleComponent {
     private Bitmap[] layers; // Array para almacenar las capas
     private Paint paint;
     private int activeLayerIndex; // Índice de la capa activa
-    private int widthCanvas = 1920;
-    private int heightCanvas = 1080;
+    private int widthCanvas = 900;
+    private int heightCanvas = 600;
     private Canvas canvasComponent;
 
     public LayersMultiple(ComponentContainer container) {
